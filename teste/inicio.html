@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Questrial', sans-serif;
+        }
+        .inicio {
+            background-image: url('https://i.imgur.com/ILoRZHV.png');
+        }
+    </style>
+    <link rel='preconnect' href='https://fonts.googleapis.com'>
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+    <link href='https://fonts.googleapis.com/css2?family=Questrial&display=swap' rel='stylesheet'>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Vortex App</title>
+</head>
+
+<body style='background-color: #BCEEEF;'>
+    <header style='padding-top: 10px; display: flex; justify-content: center;'>
+        <img src='https://i.imgur.com/dPELrd3.png' alt='' style='width: 110px;'>
+    </header>
+
+    <main style='display: flex; flex-direction: column; align-items: center; justify-content: center; gap:50px; padding-bottom: 40px;'>
+        <div class="inicio" style='background-size: cover; display: flex; flex-direction: column; gap: 10px; padding-top: 300px; padding-bottom: 100px; padding-inline: 30px; '>
+            <h1 style='color: white; text-shadow: 2px 2px #6ecce3b4; font-size: 70px; text-align: center;'>VORTEX</h1>
+            <p style='font-size: 20px; text-align: center; color: white; text-shadow: 2px 2px rgba(161, 224, 240, 0.397);'>Gere energia através do movimento</p>
+        </div>
+        <h1 style='color: #4E36DA; text-shadow: 2px 2px #6ECBE3; font-size: 40px; text-align: center;'>Como Usar?</h1>
+        <div style='padding-inline: 40px; display: flex; flex-direction: column; gap: 10px;'>
+            <p style='background-color: #5C30C5; border-radius: 5px; padding: 20px; color: white; font-size: 20px; ;'>Para utilizar nosso projeto, basta pedalar a bicicleta que o Vortex já gera a energia para o carregamento de seu dispositivo. A entrada USB para o carregamento está na caixa embaixo do banco</p>
+        </div>
+        <h1 style='color: #4E36DA; text-shadow: 2px 2px #6ECBE3; font-size: 40px;'>Dados da trilha</h1>
+
+        <div style='background-color: #5C30C5; padding: 40px; border-radius: 10px; display: flex; flex-direction: column; gap: 10px; font-size: 20px;'>
+            <div style='display: flex; flex-direction: column; gap: 5px;'>
+                <p style='color: white;'>Calorias gastas</p>
+                <p style='background-color: white; color: #5C30C5; border-radius: 5px; padding: 10px;'>0cal</p>
+            </div>
+            <div style='display: flex; flex-direction: column; gap: 5px;'>
+                <p style='color: white;'>Seu tempo de trilha foi</p>
+                <p style='background-color: white; color: #5C30C5; border-radius: 5px; padding: 10px;'>0h0min</p>
+            </div>
+            <div style='display: flex; flex-direction: column; gap: 5px;'>
+                <p style='color: white;'>Foram percorridos</p>
+                <p style='background-color: white; color: #5C30C5; border-radius: 5px; padding: 10px;'>0km</p>
+            </div>
+            <div style='display: flex; flex-direction: column; gap: 5px;'>
+                <p style='color: white;'>A energia gerada foi</p>
+                <p style='background-color: white; color: #5C30C5; border-radius: 5px; padding: 10px;'>0%</p>
+            </div>
+        </div>
+
+        <section class="info"></section>
+        <button>Enviar dados para o ESP32</button>
+    </main>
+
+    <script>
+        let Socket;
+        const button = document.querySelector('button');
+        button.addEventListener('click', sendMessage);
+
+        const section = document.querySelector('.info');
+
+        function init() {
+            Socket = new WebSocket(`ws://${window.location.hostname}:81`);
+            Socket.onmessage = (message) => {
+                section.innerHTML = `<p>${message.data}</p>`
+            };
+        }
+        function sendMessage() {
+            Socket.send('SOS FECHEM A UNASP NÃO AGUENTO MAIS')
+        }
+
+        init()
+    </script>
+</body>
+</html>
